@@ -3,6 +3,7 @@ import 'package:flash_chat/components/rounded_button.dart';
 import 'package:flash_chat/constants.dart';
 import 'package:flash_chat/screens/chat_screen.dart';
 import 'package:flutter/material.dart';
+// ignore: import_of_legacy_library_into_null_safe
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 
 // ignore: use_key_in_widget_constructors
@@ -15,9 +16,9 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final _auth = FirebaseAuth.instance;
-  bool _showSpinner = false;
   String? email;
   String? password;
+  bool _showSpinner = false;
 
   @override
   Widget build(BuildContext context) {
