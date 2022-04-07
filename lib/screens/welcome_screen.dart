@@ -9,9 +9,6 @@ class WelcomeScreen extends StatefulWidget {
   static String id = 'welcome_screen';
 
   @override
-  void initState() {}
-
-  @override
   _WelcomeScreenState createState() => _WelcomeScreenState();
 }
 

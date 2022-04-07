@@ -29,6 +29,30 @@ class _ChatScreenState extends State<ChatScreen> {
     }
   }
 
+  // void getMessages() async {
+  //   var messages = await _firestore.collection('messages').get();
+  //   var snapshots = await _firestore
+  //       .collection('messages')
+  //       .snapshots()
+  //       .map((event) => event.docs)
+  //       .toList().
+  //   for (var snapshot in await snapshots) {
+  //     event.docs;
+  //   }).toList()) {}
+
+  //   var messageList = messages.docs.map((e) => e.data()).toList();
+  //   print(messageList);
+  // }
+
+  // void messagesStream() async {
+  //   List contactList = [];
+  //   await for (var snapshot in _firestore.collection('messages').snapshots()) {
+  //     for (var message in snapshot.docs) {
+  //       print(message.data());
+  //     }
+  //   }
+  // }
+
   @override
   void initState() {
     super.initState();
@@ -56,6 +80,34 @@ class _ChatScreenState extends State<ChatScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
+            StreamBuilder<QuerySnapshot>(
+              stream: _firestore.collection('messages').snapshots(),
+              builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                if (!snapshot.hasData) {
+                  return const Center(
+                    child: CircularProgressIndicator(
+                      backgroundColor: Colors.lightBlueAccent,
+                    ),
+                  );
+                }
+                List<Text> messageWidgets = [];
+                final messages = snapshot.data!.docs;
+                for (var message in messages) {
+                  final messageText = message['text'];
+                  final messageSender = message['sender'];
+                  final messageWidget = Text(
+                    '$messageText from $messageSender',
+                    style: const TextStyle(fontSize: 50.0),
+                  );
+                  messageWidgets.add(messageWidget);
+                }
+                return Expanded(
+                  child: ListView(
+                    children: messageWidgets,
+                  ),
+                );
+              },
+            ),
             Container(
               decoration: kMessageContainerDecoration,
               child: Row(
