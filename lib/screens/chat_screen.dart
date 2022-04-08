@@ -71,7 +71,8 @@ class _ChatScreenState extends State<ChatScreen> {
               icon: const Icon(Icons.close),
               onPressed: () {
                 _auth.signOut();
-                Navigator.pop(context);
+                int count = 0;
+                Navigator.of(context).popUntil((_) => count++ >= 2);
               }),
         ],
         title: const Text('⚡️Chat'),
@@ -139,7 +140,7 @@ class MessagesStream extends StatelessWidget {
         }
 
         final List<MessageBubble> messageBubbles = [];
-        final messages = snapshot.data!.docs;
+        final messages = snapshot.data!.docs.reversed;
 
         for (var message in messages) {
           final messageText = message['text'];
@@ -159,6 +160,7 @@ class MessagesStream extends StatelessWidget {
           child: ListView(
             padding:
                 const EdgeInsets.symmetric(horizontal: 10.0, vertical: 20.0),
+            reverse: true,
             children: messageBubbles,
           ),
         );

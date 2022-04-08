@@ -20,6 +20,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   String? email;
   String? password;
   bool _showSpinner = false;
+  final emailTextController = TextEditingController();
+  final passwordTextController = TextEditingController();
 
   @override
   void initState() {
@@ -49,6 +51,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 height: 48.0,
               ),
               TextField(
+                controller: emailTextController,
                 textAlign: TextAlign.center,
                 keyboardType: TextInputType.emailAddress,
                 onChanged: (value) {
@@ -63,6 +66,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 height: 8.0,
               ),
               TextField(
+                controller: passwordTextController,
                 textAlign: TextAlign.center,
                 obscureText: true,
                 onChanged: (value) {
@@ -84,6 +88,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     setState(() {
                       _showSpinner = true;
                     });
+
                     final UserCredential? newUser =
                         await _auth.createUserWithEmailAndPassword(
                       email: email!,
@@ -92,9 +97,13 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     if (newUser != null) {
                       Navigator.pushNamed(context, ChatScreen.id);
                     }
+
                     setState(() {
                       _showSpinner = false;
                     });
+
+                    emailTextController.clear();
+                    passwordTextController.clear();
                   } catch (e) {
                     print(e);
                   }

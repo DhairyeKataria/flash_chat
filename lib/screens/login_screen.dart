@@ -19,6 +19,8 @@ class _LoginScreenState extends State<LoginScreen> {
   String? email;
   String? password;
   bool _showSpinner = false;
+  final emailTextController = TextEditingController();
+  final passwordTextController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -43,6 +45,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 height: 48.0,
               ),
               TextField(
+                controller: emailTextController,
                 textAlign: TextAlign.center,
                 keyboardType: TextInputType.emailAddress,
                 onChanged: (value) {
@@ -56,6 +59,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 height: 8.0,
               ),
               TextField(
+                controller: passwordTextController,
                 textAlign: TextAlign.center,
                 obscureText: true,
                 onChanged: (value) {
@@ -76,6 +80,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     setState(() {
                       _showSpinner = true;
                     });
+
                     final UserCredential? existingUser =
                         await _auth.signInWithEmailAndPassword(
                       email: email!,
@@ -84,9 +89,13 @@ class _LoginScreenState extends State<LoginScreen> {
                     if (existingUser != null) {
                       Navigator.pushNamed(context, ChatScreen.id);
                     }
+
                     setState(() {
                       _showSpinner = false;
                     });
+
+                    emailTextController.clear();
+                    passwordTextController.clear();
                   } catch (e) {
                     print(e);
                   }
